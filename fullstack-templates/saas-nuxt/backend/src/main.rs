@@ -40,14 +40,14 @@ impl FromRef<AppState> for Key {
 async fn axum(
     #[shuttle_shared_db::Postgres] postgres: PgPool,
     #[shuttle_secrets::Secrets] secrets: shuttle_secrets::SecretStore,
-    #[shuttle_static_folder::StaticFolder(folder = "public")] public: PathBuf,
+    #[shuttle_static_folder::StaticFolder(folder = "static")] public: PathBuf,
 ) -> shuttle_axum::ShuttleAxum {
     sqlx::migrate!()
         .run(&postgres)
         .await
         .expect("Had some errors running migrations :(");
 
-    let (stripe_key, mailgun_key, mailgun_url, domain) = grab_secrets(secrets);
+    let (stripe_key, mailgun_key, mailgun_url, domain, stripe_sub_price) = grab_secrets(secrets);
 
     let state = AppState {
         postgres,
@@ -76,7 +76,7 @@ async fn axum(
     Ok(router.into())
 }
 
-fn grab_secrets(secrets: shuttle_secrets::SecretStore) -> (String, String, String, String) {
+fn grab_secrets(secrets: shuttle_secrets::SecretStore) -> (String, String, String, String, String) {
     let stripe_key = secrets
         .get("STRIPE_KEY")
         .unwrap_or_else(|| "None".to_string());

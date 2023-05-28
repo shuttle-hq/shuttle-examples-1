@@ -1,5 +1,4 @@
 <template>
-  <Layout>
     <form class="px-5 min-h-screen flex flex-col items-center justify-center bg-gray-100" @submit.prevent="handleSubmit">
       <div
         class="
@@ -21,9 +20,9 @@
         <fieldset class="mt-10">
           <div class="relative mb-4">
             <label for="name" class="text-xs tracking-wide text-gray-600">Name:</label>
-            <FontAwesomeIcon
+            <font-awesome-icon
               :icon="faUser"
-              class="absolute left-3 top-[30%]"
+              class="absolute left-3 top-[55%]"
             />
             <input
               type="text"
@@ -37,9 +36,9 @@
 
           <div class="relative mb-4">
             <label for="email" class="text-xs tracking-wide text-gray-600">E-Mail Address:</label>
-            <FontAwesomeIcon
+            <font-awesome-icon
               :icon="faAt"
-              class="absolute left-3 top-[30%]"
+              class="absolute left-3 top-[55%]"
             />
             <input
               type="email"
@@ -53,9 +52,9 @@
 
           <div class="relative mb-4">
             <label for="password" class="text-xs tracking-wide text-gray-600">Password:</label>
-            <FontAwesomeIcon
+            <font-awesome-icon
               :icon="faLock"
-              class="absolute left-3 top-[30%]"
+              class="absolute left-3 top-[55%]"
             />
             <input
               :type="pwVis ? 'text' : 'password'"
@@ -65,18 +64,18 @@
               class="text-sm placeholder-gray-500 pl-10 pr-4 rounded-md border border-gray-400 w-full py-2 focus:outline-none focus:border-black"
               placeholder="Enter your password"
             />
-            <FontAwesomeIcon
+            <font-awesome-icon
               :icon="pwVis ? faEyeSlash : faEye"
-              class="absolute right-3 top-[30%]"
+              class="absolute right-3 top-[55%]"
               @click="togglePassword"
             />
           </div>
 
           <div class="relative mb-4">
             <label for="passwordConfirm" class="text-xs tracking-wide text-gray-600">Confirm Password:</label>
-            <FontAwesomeIcon
+            <font-awesome-icon
               :icon="faLock"
-              class="absolute left-3 top-[30%]"
+              class="absolute left-3 top-[55%]"
             />
             <input
               :type="pwVis ? 'text' : 'password'"
@@ -86,9 +85,9 @@
               class="text-sm placeholder-gray-500 pl-10 pr-4 rounded-md border border-gray-400 w-full py-2 focus:outline-none focus:border-black"
               placeholder="Confirm your password"
             />
-            <FontAwesomeIcon
+            <font-awesome-icon
               :icon="pwVis ? faEyeSlash : faEye"
-              class="absolute right-3 top-[30%]"
+              class="absolute right-3 top-[55%]"
               @click="togglePassword"
             />
           </div>
@@ -135,7 +134,6 @@
           </span>
         </div>
       </form>
-    </Layout>
   </template>
 
 <script setup lang="ts">
@@ -154,7 +152,7 @@ import {
   faUserCircle,
   faUserDoctor,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
+
 
 const name = ref('');
 const email = ref('');
@@ -168,7 +166,7 @@ const handleSubmit = async () => {
   const url = `//${window.location.host}/api/auth/register`;
 
   try {
-    await fetch(url, {
+    await $fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -180,10 +178,11 @@ const handleSubmit = async () => {
       }),
     });
 
-    router.push('/login');
+    
   } catch (e: any) {
     console.log(`Error: ${e}`);
   }
+  router.push('/login');
 };
 
 const togglePassword = () => {

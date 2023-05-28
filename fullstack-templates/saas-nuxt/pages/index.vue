@@ -1,7 +1,7 @@
 <template>
     <section class="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
       <h1 class="text-5xl font-bold text-center px-5">
-        Welcome to <span class="text-[#EF924C]">Next.js + Rust SaaS Template</span>
+        Welcome to <span class="text-[#EF924C]">Nuxt.js + Rust SaaS Template</span>
       </h1>
 
       <div class="px-5 lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 justify-center gap-6">
@@ -42,7 +42,7 @@ const cards = [
   {
     title: 'Learn About Nuxt.js',
     description: 'Nuxt.js is a Vue.js meta-framework at the forefront of JavaScript.',
-    href: 'https://nextjs.org/',
+    href: 'https://nuxt.com/docs/getting-started/introduction',
   },
   {
     title: 'Join the community',

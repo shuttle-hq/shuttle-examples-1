@@ -32,10 +32,10 @@ const handleLogout = async () => {
       :class="{'h-screen': open}"
     >
       <button class="absolute right-6 dark:text-[#D8D8D8] lg:hidden" @click="toggleOpen">
-        <FontAwesomeIcon icon="faBars" color="black" size="2x" fixedWidth />
+        <font-awesome-icon icon="faBars" color="black" size="2x" fixedWidth />
       </button>
       <NuxtLink to="/">
-        <FontAwesomeIcon icon="faRocket" size="2x" color="black" />
+        <font-awesome-icon icon="faRocket" size="2x" color="black" />
       </NuxtLink>
       <div class="lg:flex flex-col justify-between flex-1 mt-6" :class="{'hidden': !open}">
         <nav class="-mx-3 space-y-3 lg:space-y-6 flex flex-col lg:justify-between lg:h-full">
@@ -44,7 +44,7 @@ const handleLogout = async () => {
               class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
               to="/dashboard"
             >
-              <FontAwesomeIcon icon="faGauge" color="black" fixedWidth />
+              <font-awesome-icon icon="faGauge" color="black" fixedWidth />
               <span class="mx-2 text-sm font-medium">Dashboard</span>
             </NuxtLink>
 
@@ -52,7 +52,7 @@ const handleLogout = async () => {
               class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
               to="/dashboard/customers"
             >
-              <FontAwesomeIcon icon="faUsers" color="black" fixedWidth />
+              <font-awesome-icon icon="faUsers" color="black" fixedWidth />
               <span class="mx-2 text-sm font-medium">Customers</span>
             </NuxtLink>
 
@@ -60,7 +60,7 @@ const handleLogout = async () => {
               class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
               to="/dashboard/deals"
             >
-              <FontAwesomeIcon icon="faHandshake" color="black" fixedWidth />
+              <font-awesome-icon icon="faHandshake" color="black" fixedWidth />
               <span class="mx-2 text-sm font-medium">Deals</span>
             </NuxtLink>
 
@@ -68,18 +68,18 @@ const handleLogout = async () => {
               class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
               to="/dashboard/upgrade"
             >
-              <FontAwesomeIcon icon="faCoins" color="black" fixedWidth />
+              <font-awesome-icon icon="faCoins" color="black" fixedWidth />
               <span class="mx-2 text-sm font-medium">Upgrade</span>
             </NuxtLink>
           </div>
 
           <div class="space-y-3 flex flex-col dark:text-gray-200 items-start">
             <div class="px-3">
-              <FontAwesomeIcon icon="faUserSecret" color="black" fixedWidth />
+              <font-awesome-icon icon="faUserSecret" color="black" fixedWidth />
               <span class="text-sm mx-2 font-medium">{{ email }}</span>
             </div>
             <div class="px-3">
-              <FontAwesomeIcon icon="faRightFromBracket" color="black" fixedWidth />
+              <font-awesome-icon icon="faRightFromBracket" color="black" fixedWidth />
               <button class="text-sm mx-2 font-medium" @click="handleLogout">Log Out</button>
             </div>
           </div>

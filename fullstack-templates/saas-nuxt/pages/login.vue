@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useAccountStore } from '@/stores/account';
 import { faAt, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 
 const loginEmail = ref('');
 const pw = ref('');
@@ -16,12 +15,12 @@ const route = useRoute();
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
 
-  const url = `${route.params}/api/auth/login`;
+  const url = "/api/auth/login";
 
   try {
-    let res = await fetch(url, {
+    let res = await $fetch("/api/auth/login", {
       method: 'POST',
-      mode: 'cors',
+      //mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
       },
