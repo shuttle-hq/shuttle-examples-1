@@ -1,5 +1,5 @@
 [package]
-name = "api"
+name = "nuxt-saas"
 version = "0.1.0"
 edition = "2021"
 publish = false
@@ -26,3 +26,4 @@ time = { version = "0.3.20", features = ["serde"] }
 tokio = "1.27.0"
 tower = "0.4.13"
 tower-http = { version = "0.4.0", features = ["cors", "fs"] }
+log = "0.4.14"

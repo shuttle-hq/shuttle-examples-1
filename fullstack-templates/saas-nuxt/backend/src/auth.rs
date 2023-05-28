@@ -10,6 +10,8 @@ use serde::Deserialize;
 use sqlx::Row;
 use time::Duration;
 
+use log::error;
+
 use crate::AppState;
 
 #[derive(Deserialize)]
@@ -47,6 +49,8 @@ pub async fn register(
     }
 }
 
+
+
 pub async fn login(
     State(state): State<AppState>,
     jar: PrivateCookieJar,
@@ -59,16 +63,22 @@ pub async fn login(
     match query.await {
         Ok(res) => {
             if bcrypt::verify(login.password, res.get("password")).is_err() {
+                error!("Failed to verify password for user {}", &login.email);
                 return Err(StatusCode::BAD_REQUEST);
             }
             let session_id = rand::random::<u64>().to_string();
 
-            sqlx::query("INSERT INTO sessions (session_id, user_id) VALUES ($1, $2) ON CONFLICT (user_id) DO UPDATE SET session_id = EXCLUDED.session_id")
+            match sqlx::query("INSERT INTO sessions (session_id, user_id) VALUES ($1, $2) ON CONFLICT (user_id) DO UPDATE SET session_id = EXCLUDED.session_id")
                 .bind(&session_id)
                 .bind(res.get::<i32, _>("id"))
                 .execute(&state.postgres)
-                .await
-                .expect("Couldn't insert session :(");
+                .await {
+                    Ok(_) => {},
+                    Err(e) => {
+                        error!("Couldn't insert session: {}", e);
+                        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+                    }
+                }
 
             let cookie = Cookie::build("foo", session_id)
                 .secure(true)
@@ -81,9 +91,13 @@ pub async fn login(
             Ok((jar.add(cookie), StatusCode::OK))
         }
 
-        Err(_) => Err(StatusCode::BAD_REQUEST),
+        Err(e) => {
+            error!("Failed to fetch user data for email {}: {}", &login.email, e);
+            Err(StatusCode::BAD_REQUEST)
+        },
     }
 }
+
 
 pub async fn logout(
     State(state): State<AppState>,

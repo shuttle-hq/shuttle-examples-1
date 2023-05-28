@@ -38,9 +38,9 @@ impl FromRef<AppState> for Key {
 
 #[shuttle_runtime::main]
 async fn axum(
-    #[shuttle_shared_db::Postgres] postgres: PgPool,
+    #[shuttle_shared_db::Postgres] postgres: PgPool, 
     #[shuttle_secrets::Secrets] secrets: shuttle_secrets::SecretStore,
-    #[shuttle_static_folder::StaticFolder(folder = "static")] public: PathBuf,
+    #[shuttle_static_folder::StaticFolder(folder = "public")] public: PathBuf,
 ) -> shuttle_axum::ShuttleAxum {
     sqlx::migrate!()
         .run(&postgres)
