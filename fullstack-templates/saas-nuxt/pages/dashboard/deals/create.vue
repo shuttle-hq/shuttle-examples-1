@@ -1,5 +1,77 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useAccountStore } from '@/stores/account';
+
+definePageMeta({
+  layout: false,
+});
+
+
+const { email } = useAccountStore();
+const estimate = ref('');
+const custId = ref('');
+const custnames = ref([]);
+
+const router = useRouter();
+
+const handleSubmit = async () => {
+  const url = `//${window.location.host}/api/deals/create`;
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+
+      body: JSON.stringify({
+        estimatedworth: parseInt(estimate.value),
+        cust_id: parseInt(custId.value),
+        useremail: email,
+      }),
+    });
+
+    if (res.status == 403) {
+      return router.push('/login');
+    }
+
+    router.push('/dashboard/deals');
+  } catch (e) {
+    console.log(`Error: ${e}`);
+  }
+};
+
+onMounted(async () => {
+  const url = `//${window.location.host}/api/customers/names`;
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+
+      body: JSON.stringify({
+        email: email,
+      }),
+    });
+
+    if (res.status == 403) {
+      return router.push('/login');
+    }
+
+    const data = await res.json();
+
+    custnames.value = data;
+  } catch (e) {
+    console.log(`Error: ${e}`);
+  }
+});
+</script>
 <template>
-  <Layout>
+  <NuxtLayout name="authed">
     <form
       class="min-h-screen flex flex-col items-center justify-center bg-gray-100"
       @submit.prevent="handleSubmit"
@@ -77,73 +149,5 @@
         </fieldset>
       </div>
     </form>
-  </Layout>
+  </NuxtLayout>
 </template>
-
-<script setup>
-import { ref, onMounted } from 'vue';
-import { useAccountStore } from '@/stores/account';
-
-const { email } = useAccountStore();
-const estimate = ref('');
-const custId = ref('');
-const custnames = ref([]);
-
-const router = useRouter();
-
-const handleSubmit = async () => {
-  const url = `//${window.location.host}/api/deals/create`;
-
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-
-      body: JSON.stringify({
-        estimatedworth: parseInt(estimate.value),
-        cust_id: parseInt(custId.value),
-        useremail: email,
-      }),
-    });
-
-    if (res.status == 403) {
-      return router.push('/login');
-    }
-
-    router.push('/dashboard/deals');
-  } catch (e) {
-    console.log(`Error: ${e}`);
-  }
-};
-
-onMounted(async () => {
-  const url = `//${window.location.host}/api/customers/names`;
-
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-
-      body: JSON.stringify({
-        email: email,
-      }),
-    });
-
-    if (res.status == 403) {
-      return router.push('/login');
-    }
-
-    const data = await res.json();
-
-    custnames.value = data;
-  } catch (e) {
-    console.log(`Error: ${e}`);
-  }
-});
-</script>

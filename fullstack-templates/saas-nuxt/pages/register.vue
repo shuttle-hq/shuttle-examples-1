@@ -1,3 +1,56 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import {
+  faAt,
+  faEye,
+  faEyeSlash,
+  faFaceFrownOpen,
+  faLock,
+  faMailBulk,
+  faPassport,
+  faUser,
+  faUserAlt,
+  faUserCircle,
+  faUserDoctor,
+} from '@fortawesome/free-solid-svg-icons';
+
+
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const passwordConfirm = ref('');
+const pwVis = ref(false);
+
+const router = useRouter();
+
+const handleSubmit = async () => {
+  const url = `//${window.location.host}/api/auth/register`;
+
+  try {
+    await $fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name.value,
+        email: email.value,
+        password: password.value,
+      }),
+    });
+
+    
+  } catch (e: any) {
+    console.log(`Error: ${e}`);
+  }
+  router.push('/login');
+};
+
+const togglePassword = () => {
+  pwVis.value = !pwVis.value;
+};
+</script>
 <template>
     <form class="px-5 min-h-screen flex flex-col items-center justify-center bg-gray-100" @submit.prevent="handleSubmit">
       <div
@@ -135,57 +188,3 @@
         </div>
       </form>
   </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import {
-  faAt,
-  faEye,
-  faEyeSlash,
-  faFaceFrownOpen,
-  faLock,
-  faMailBulk,
-  faPassport,
-  faUser,
-  faUserAlt,
-  faUserCircle,
-  faUserDoctor,
-} from '@fortawesome/free-solid-svg-icons';
-
-
-const name = ref('');
-const email = ref('');
-const password = ref('');
-const passwordConfirm = ref('');
-const pwVis = ref(false);
-
-const router = useRouter();
-
-const handleSubmit = async () => {
-  const url = `//${window.location.host}/api/auth/register`;
-
-  try {
-    await $fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name.value,
-        email: email.value,
-        password: password.value,
-      }),
-    });
-
-    
-  } catch (e: any) {
-    console.log(`Error: ${e}`);
-  }
-  router.push('/login');
-};
-
-const togglePassword = () => {
-  pwVis.value = !pwVis.value;
-};
-</script>

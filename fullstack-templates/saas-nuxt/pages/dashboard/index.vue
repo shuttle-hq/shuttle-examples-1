@@ -1,4 +1,6 @@
 <template>
+    <NuxtLayout name="authed">
+      
     <div class="flex flex-col gap-8 pt-10 justify-center bg-slate-50 items-center pb-10 overflow-y-scroll">
       <div class="w-full px-5 sm:px-24 py-10">
         <SalesChart v-if="data" />
@@ -10,6 +12,7 @@
       </div>
     </div>
     <p v-if="!data">It looks like something went wrong when retrieving data :(</p>
+    </NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -18,6 +21,10 @@ import { useAccountStore } from '@/stores/account';
 import SalesChart from '@/components/SalesChart.vue';
 import RecentSales from '@/components/RecentSales.vue';
 import TopClients from '@/components/TopClients.vue';
+
+definePageMeta({
+  layout: false,
+});
 
 interface DashboardData {
   sales_deals_info: SalesDealsInfo;

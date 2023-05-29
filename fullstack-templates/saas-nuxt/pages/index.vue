@@ -1,3 +1,27 @@
+<script setup lang="ts">
+const cards = [
+  {
+    title: 'Deployed from Shuttle',
+    description: 'Deployed via Shuttle, a Rust-native cloud dev platform.',
+    href: 'https://www.shuttle.rs',
+  },
+  {
+    title: 'Learn About Rust',
+    description: 'Rust is a brilliant language for writing memory-safe, efficient software.',
+    href: 'https://doc.rust-lang.org/book/',
+  },
+  {
+    title: 'Learn About Nuxt.js',
+    description: 'Nuxt.js is a Vue.js meta-framework at the forefront of JavaScript.',
+    href: 'https://nuxt.com/docs/getting-started/introduction',
+  },
+  {
+    title: 'Join the community',
+    description: 'Join a thriving community with like-minded Rustaceans and web developers.',
+    href: 'https://discord.com/invite/shuttle',
+  },
+];
+</script>
 <template>
     <section class="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
       <h1 class="text-5xl font-bold text-center px-5">
@@ -26,28 +50,3 @@
       </p>
     </section>
 </template>
-
-<script setup lang="ts">
-const cards = [
-  {
-    title: 'Deployed from Shuttle',
-    description: 'Deployed via Shuttle, a Rust-native cloud dev platform.',
-    href: 'https://www.shuttle.rs',
-  },
-  {
-    title: 'Learn About Rust',
-    description: 'Rust is a brilliant language for writing memory-safe, efficient software.',
-    href: 'https://doc.rust-lang.org/book/',
-  },
-  {
-    title: 'Learn About Nuxt.js',
-    description: 'Nuxt.js is a Vue.js meta-framework at the forefront of JavaScript.',
-    href: 'https://nuxt.com/docs/getting-started/introduction',
-  },
-  {
-    title: 'Join the community',
-    description: 'Join a thriving community with like-minded Rustaceans and web developers.',
-    href: 'https://discord.com/invite/shuttle',
-  },
-];
-</script>

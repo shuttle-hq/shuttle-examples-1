@@ -18,7 +18,7 @@ const handleSubmit = async (e: Event) => {
   const url = "/api/auth/login";
 
   try {
-    let res = await $fetch(url, {
+    let res = await fetch(url, {
       method: 'POST',
       //mode: 'cors',
       headers: {
@@ -28,10 +28,12 @@ const handleSubmit = async (e: Event) => {
         email: loginEmail.value,
         password: pw.value,
       }),
-    });
-    console.log(res.status)
+    })
+    
+    console.log('Status code:', res.status);
+    console.log('Status text:', res.statusText);
     // if response type is 200 then redirect to dashboard
-    if (res.ok || res.status == 200) {
+    if (res.status == 200) {
       changeEmail(loginEmail.value);
       router.push('/dashboard');
     } else {
@@ -48,7 +50,6 @@ const togglePassword = (e: Event) => {
   pwVis.value = !pwVis.value;
 };
 </script>
-
 <template>
   <form
     class="px-5 min-h-screen flex flex-col items-center justify-center bg-gray-100"

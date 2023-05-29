@@ -1,5 +1,73 @@
-<template>
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useAccountStore } from '@/stores/account';
 
+definePageMeta({
+  layout: false,
+});
+
+
+const { email } = useAccountStore();
+const deals = ref([]);
+const router = useRouter();
+
+const handleStatus = async (e) => {
+  const element = e.target;
+  const id = element.getAttribute('data-id');
+  const status = element.value;
+
+  const url = `//${window.location.host}/api/deals/${id}`;
+
+  try {
+    const res = await fetch(url, {
+      method: 'PUT',
+      mode: 'cors',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        new_value: status,
+        email: email,
+      }),
+    });
+
+    if (res.ok) {
+      element.value = status;
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+
+onMounted(async () => {
+  const url = `//${window.location.host}/api/deals`;
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        email: email,
+      }),
+    });
+
+    if (res.status === 403) {
+      await router.push('/login');
+      return;
+    }
+
+    const dealData = await res.json();
+    deals.value = dealData;
+  } catch (e) {
+    console.log(`Error: ${e}`);
+  }
+});
+</script>
+<template>
+  <NuxtLayout name="authed">
   <div class="px-5 py-10 flex flex-col gap-4 w-full md:px-24 items-start">
     <div>
       <h2 class="text-2xl font-semibold leading-tight my-10">Deals</h2>
@@ -62,69 +130,6 @@
       <font-awesome-icon icon="faPlus" color="white" /> Create Deal
     </NuxtLink>
   </div>
-
+</NuxtLayout>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import { useAccountStore } from '@/stores/account';
-
-const { email } = useAccountStore();
-const deals = ref([]);
-const router = useRouter();
-
-const handleStatus = async (e) => {
-  const element = e.target;
-  const id = element.getAttribute('data-id');
-  const status = element.value;
-
-  const url = `//${window.location.host}/api/deals/${id}`;
-
-  try {
-    const res = await fetch(url, {
-      method: 'PUT',
-      mode: 'cors',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({
-        new_value: status,
-        email: email,
-      }),
-    });
-
-    if (res.ok) {
-      element.value = status;
-    }
-  } catch (e) {
-    console.log(e.message);
-  }
-};
-
-onMounted(async () => {
-  const url = `//${window.location.host}/api/deals`;
-
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({
-        email: email,
-      }),
-    });
-
-    if (res.status === 403) {
-      await router.push('/login');
-      return;
-    }
-
-    const dealData = await res.json();
-    deals.value = dealData;
-  } catch (e) {
-    console.log(`Error: ${e}`);
-  }
-});
-</script>

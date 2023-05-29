@@ -1,3 +1,6 @@
+<script setup>
+// You can import your additional components or composable here if needed
+</script>
 <template>
     <section class="my-10 flex flex-col justify-center w-full">
       <h1 class="text-2xl lg:text-5xl text-center">Pricing</h1>
@@ -40,7 +43,3 @@
       </div>
     </section>
 </template>
-
-<script setup>
-// You can import your additional components or composable here if needed
-</script>

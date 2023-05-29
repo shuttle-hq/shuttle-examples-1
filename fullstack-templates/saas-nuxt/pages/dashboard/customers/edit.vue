@@ -1,5 +1,48 @@
+<script setup>
+import { ref } from 'vue';
+
+definePageMeta({
+  layout: false,
+});
+
+
+const firstName = ref('');
+const lastName = ref('');
+const email = ref('');
+const phone = ref('');
+const priority = ref('');
+
+const router = useRouter();
+
+const handleSubmit = async () => {
+  const url = `//${window.location.host}/api/auth/register`;
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstName: firstName.value,
+        lastName: lastName.value,
+        email: email.value,
+        phone: phone.value,
+        priority: Number(priority.value),
+      }),
+    });
+
+    if (res.ok) {
+      await router.push('/dashboard/customers');
+    }
+  } catch (e) {
+    console.log(`Error: ${e}`);
+  }
+};
+</script>
 <template>
-  <Layout>
+  <NuxtLayout name="authed">
     <form
       class="py-10 flex flex-col gap-4 justify-center items-center"
       @submit.prevent="handleSubmit"
@@ -53,44 +96,5 @@
       </label>
       <button type="submit">Submit</button>
     </form>
-  </Layout>
+  </NuxtLayout>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-
-const firstName = ref('');
-const lastName = ref('');
-const email = ref('');
-const phone = ref('');
-const priority = ref('');
-
-const router = useRouter();
-
-const handleSubmit = async () => {
-  const url = `//${window.location.host}/api/auth/register`;
-
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName: firstName.value,
-        lastName: lastName.value,
-        email: email.value,
-        phone: phone.value,
-        priority: Number(priority.value),
-      }),
-    });
-
-    if (res.ok) {
-      await router.push('/dashboard/customers');
-    }
-  } catch (e) {
-    console.log(`Error: ${e}`);
-  }
-};
-</script>

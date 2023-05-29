@@ -1,34 +1,3 @@
-<template>
-  <div v-if="vis" class="w-full h-screen backdrop-blur z-50 absolute">
-    <div class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400 flex items-center justify-center">
-      <div>
-        <h1 class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">
-          Customer details
-        </h1>
-
-        <button @click="setVis(false)" class="text-right">
-          <font-awesome-icon
-            icon={faMultiply}
-            className="text-2xl hover:text-red-500 transition-all"
-            color="rgb(59 130 246)"
-          />
-        </button>
-      </div>
-      <div v-if="customer" class="space-y-2">
-        <p class="text-xl">
-          Name: {{customer.firstname}} {{customer.lastname}}
-        </p>
-        <p> Email: {{customer.email}} </p>
-        <p> Phone: {{customer.phone}} </p>
-      </div>
-      <button @click="handleDelete" class="bg-[#EF924C] px-5 py-2 text-white">
-        Delete Customer
-      </button>
-      <p v-if="!accountStore.email">Customer does not exist :(</p>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import { useAccountStore } from '@/stores/account'
@@ -80,3 +49,35 @@ const handleDelete = async () => {
   }
 }
 </script>
+<template>
+  <div v-if="vis" class="w-full h-screen backdrop-blur z-50 absolute">
+    <div class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400 flex items-center justify-center">
+      <div>
+        <h1 class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">
+          Customer details
+        </h1>
+
+        <button @click="setVis(false)" class="text-right">
+          <font-awesome-icon
+            icon={faMultiply}
+            className="text-2xl hover:text-red-500 transition-all"
+            color="rgb(59 130 246)"
+          />
+        </button>
+      </div>
+      <div v-if="customer" class="space-y-2">
+        <p class="text-xl">
+          Name: {{customer.firstname}} {{customer.lastname}}
+        </p>
+        <p> Email: {{customer.email}} </p>
+        <p> Phone: {{customer.phone}} </p>
+      </div>
+      <button @click="handleDelete" class="bg-[#EF924C] px-5 py-2 text-white">
+        Delete Customer
+      </button>
+      <p v-if="!accountStore.email">Customer does not exist :(</p>
+    </div>
+  </div>
+</template>
+
+

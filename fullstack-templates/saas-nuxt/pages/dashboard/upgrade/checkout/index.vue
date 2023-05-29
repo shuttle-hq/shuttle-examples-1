@@ -1,4 +1,5 @@
 <template>
+  <NuxtLayout name="authed">
   <form
     class="px-5 min-h-screen flex flex-col items-center justify-center bg-gray-100"
     @submit.prevent="handleSubmit"
@@ -67,11 +68,17 @@
       </fieldset>
     </div>
   </form>
+  </NuxtLayout>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+definePageMeta({
+  layout: false,
+});
+
 
 export default {
   setup() {

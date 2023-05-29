@@ -1,5 +1,49 @@
+<script setup>
+import { ref } from 'vue';
+import { useAccountStore } from '@/stores/account';
+
+definePageMeta({
+  layout: false,
+});
+
+const firstName = ref('');
+const lastName = ref('');
+const custEmail = ref('');
+const phone = ref('');
+const priority = ref('1');
+const accountStore = useAccountStore();
+const router = useRouter();
+
+const handleSubmit = async () => {
+  const url = `//${window.location.host}/api/customers/create`;
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstName: firstName.value,
+        lastName: lastName.value,
+        email: custEmail.value,
+        phone: phone.value,
+        priority: Number(priority.value),
+        userEmail: accountStore.email,
+      }),
+    });
+
+    if (res.ok) {
+      await router.push('/dashboard/customers');
+    }
+  } catch (e) {
+    console.log(`Error: ${e}`);
+  }
+};
+</script>
 <template>
-  <Layout>
+  <NuxtLayout name="authed">
     <form
       class="min-h-screen flex flex-col items-center justify-center bg-gray-100"
       @submit.prevent="handleSubmit"
@@ -136,46 +180,5 @@
         </fieldset>
       </div>
     </form>
-  </Layout>
+  </NuxtLayout>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-import { useAccountStore } from '@/stores/account';
-
-const firstName = ref('');
-const lastName = ref('');
-const custEmail = ref('');
-const phone = ref('');
-const priority = ref('1');
-const accountStore = useAccountStore();
-const router = useRouter();
-
-const handleSubmit = async () => {
-  const url = `//${window.location.host}/api/customers/create`;
-
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName: firstName.value,
-        lastName: lastName.value,
-        email: custEmail.value,
-        phone: phone.value,
-        priority: Number(priority.value),
-        userEmail: accountStore.email,
-      }),
-    });
-
-    if (res.ok) {
-      await router.push('/dashboard/customers');
-    }
-  } catch (e) {
-    console.log(`Error: ${e}`);
-  }
-};
-</script>

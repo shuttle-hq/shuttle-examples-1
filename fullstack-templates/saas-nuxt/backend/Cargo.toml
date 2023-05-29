@@ -1,5 +1,5 @@
 [package]
-name = "nuxt-saas"
+name = "nuxt-saas-starter"
 version = "0.1.0"
 edition = "2021"
 publish = false
