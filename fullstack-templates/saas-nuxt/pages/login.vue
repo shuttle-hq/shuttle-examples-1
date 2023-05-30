@@ -29,11 +29,8 @@ const handleSubmit = async (e: Event) => {
         password: pw.value,
       }),
     })
-    
-    console.log('Status code:', res.status);
-    console.log('Status text:', res.statusText);
     // if response type is 200 then redirect to dashboard
-    if (res.status == 200) {
+    if (res.ok) {
       changeEmail(loginEmail.value);
       router.push('/dashboard');
     } else {

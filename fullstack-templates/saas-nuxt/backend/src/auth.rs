@@ -62,41 +62,35 @@ pub async fn login(
 
     match query.await {
         Ok(res) => {
-            if bcrypt::verify(login.password, res.get("password")).is_err() {
-                error!("Failed to verify password for user {}", &login.email);
-                return Err(StatusCode::BAD_REQUEST);
-            }
-            let session_id = rand::random::<u64>().to_string();
+            match bcrypt::verify(login.password, res.get("password")) {
+                Ok(true) => {
+                    let session_id = rand::random::<u64>().to_string();
 
-            match sqlx::query("INSERT INTO sessions (session_id, user_id) VALUES ($1, $2) ON CONFLICT (user_id) DO UPDATE SET session_id = EXCLUDED.session_id")
-                .bind(&session_id)
-                .bind(res.get::<i32, _>("id"))
-                .execute(&state.postgres)
-                .await {
-                    Ok(_) => {},
-                    Err(e) => {
-                        error!("Couldn't insert session: {}", e);
-                        return Err(StatusCode::INTERNAL_SERVER_ERROR);
-                    }
+                    sqlx::query("INSERT INTO sessions (session_id, user_id) VALUES ($1, $2) ON CONFLICT (user_id) DO UPDATE SET session_id = EXCLUDED.session_id")
+                        .bind(&session_id)
+                        .bind(res.get::<i32, _>("id"))
+                        .execute(&state.postgres)
+                        .await
+                        .expect("Couldn't insert session :(");
+
+                    let cookie = Cookie::build("foo", session_id)
+                        .secure(true)
+                        .same_site(SameSite::Strict)
+                        .http_only(true)
+                        .path("/")
+                        .max_age(Duration::WEEK)
+                        .finish();
+
+                    Ok((jar.add(cookie), StatusCode::OK))
                 }
-
-            let cookie = Cookie::build("foo", session_id)
-                .secure(true)
-                .same_site(SameSite::Strict)
-                .http_only(true)
-                .path("/")
-                .max_age(Duration::WEEK)
-                .finish();
-
-            Ok((jar.add(cookie), StatusCode::OK))
+                Ok(false) => Err(StatusCode::BAD_REQUEST),  // Password didn't match.
+                Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),  // Something went wrong while verifying the password.
+            }
         }
-
-        Err(e) => {
-            error!("Failed to fetch user data for email {}: {}", &login.email, e);
-            Err(StatusCode::BAD_REQUEST)
-        },
+        Err(_) => Err(StatusCode::BAD_REQUEST),  // Something went wrong while fetching the user.
     }
 }
+
 
 
 pub async fn logout(
