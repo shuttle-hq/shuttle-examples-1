@@ -36,6 +36,7 @@
   "devDependencies": {
     "@nuxt/kit": "@nuxt/kit-edge@latest",
     "@nuxtjs/tailwindcss": "^6.7.0",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "eslint": "8.38.0"
   }
 }

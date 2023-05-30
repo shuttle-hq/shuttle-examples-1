@@ -13,4 +13,7 @@ export const useAccountStore = defineStore('account', {
       this.email = to;
     },
   },
+  persist: {
+    storage: persistedState.sessionStorage,
+  },
 });
